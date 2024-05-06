@@ -4,7 +4,6 @@ import { GameObject, GameObjectProps } from "./GameObject";
 
 export function GameScreen() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const [warriorX, setWarriorX] = useState(1);
   const [warriorY, setWarriorY] = useState(7);
 
@@ -14,19 +13,30 @@ export function GameScreen() {
 
     const context = canvas.getContext("2d");
     if (!context) return;
-    setCtx(context);
 
     const map = new Image();
     map.onload = () => {
       context.drawImage(map, 0, 0);
-      drawWarrior(warriorX, warriorY);
+      drawWarrior(warriorX, warriorY, context);
     };
     map.src = "src/assets/maps/level1.png";
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "d" || event.key === "D") {
-        setWarriorX(warriorX + 5);
-        console.log(warriorX);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "d" || "D":
+          setWarriorX(warriorX + 0.09);
+          console.log(warriorX);
+          break;
+        case "a" || "A":
+          setWarriorX(warriorX - 0.09);
+          console.log(warriorX);
+          break;
+        case "w" || "W":
+          console.log("JUMP!");
+          break;
+        case " ":
+          console.log("HIT!");
+          break;
       }
     };
 
@@ -37,20 +47,15 @@ export function GameScreen() {
     };
   }, [warriorX]);
 
-  const drawWarrior = (x: number, y: number) => {
-    if (!ctx) return;
-    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear canvas
-    // Redraw background
-    // const map = new Image();
-    // map.src = "src/assets/maps/level1.png";
-    // map.onload = () => {
-    //   ctx.drawImage(map, 0, 0);
-    // };
-    // Draw warrior
+  const drawWarrior = (x: number, y: number, ctx: CanvasRenderingContext2D) => {
+    if (!ctx) {
+      console.log("ctx is " + ctx);
+      return;
+    }
     const warrior = new Image();
     warrior.src = "src/assets/characters/warrior/Idle.png";
     warrior.onload = () => {
-      ctx.drawImage(warrior, x, y, 78, 58, 0, 0, 78, 58);
+      ctx.drawImage(warrior, 0, 0, 78, 58, x * 32 - 8, y * 32 - 12, 78, 58);
     };
   };
 
@@ -62,12 +67,6 @@ export function GameScreen() {
         width="512"
         height="288"
       ></canvas>
-      {/* <GameObject
-        x={warriorX}
-        y={warriorY}
-        src="src/assets/characters/warrior/Idle.png"
-        ctx={ctx!}
-      /> */}
     </div>
   );
 }
