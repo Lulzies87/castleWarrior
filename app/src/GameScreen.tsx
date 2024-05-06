@@ -20,18 +20,26 @@ export function GameScreen() {
     };
     map.src = "src/assets/maps/level1.png";
 
+    let moveInterval: number | null = null;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
-        case "d" || "D":
-          setWarriorX(warriorX + 0.09);
-          console.log(warriorX);
+        case "d":
+        case "D":
+          if (!moveInterval) {
+            moveInterval = setInterval(() => {
+              setWarriorX((prevX) => prevX + 0.1);
+            }, 1);
+          }
           break;
-        case "a" || "A":
-          setWarriorX(warriorX - 0.09);
-          console.log(warriorX);
+        case "a":
+        case "A":
+          setWarriorX((prevX) => prevX - 0.1);
           break;
-        case "w" || "W":
+        case "w":
+        case "W":
           // add JUMP code
+          setWarriorY((prevY) => prevY - 2);
           console.log("JUMP!");
           break;
         case " ":
@@ -41,10 +49,27 @@ export function GameScreen() {
       }
     };
 
+    const handleKeyUp = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "d":
+        case "D":
+          if (moveInterval) {
+            clearInterval(moveInterval);
+            moveInterval = null;
+          }
+          break;
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      if (moveInterval) {
+        clearInterval(moveInterval);
+      }
     };
   }, [warriorX]);
 
