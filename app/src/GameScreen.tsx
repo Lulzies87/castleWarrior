@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./GameScreen.module.scss";
-import { GameObject, GameObjectProps } from "./GameObject";
 
 export function GameScreen() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,9 +31,11 @@ export function GameScreen() {
           console.log(warriorX);
           break;
         case "w" || "W":
+          // add JUMP code
           console.log("JUMP!");
           break;
         case " ":
+          // add HIT code
           console.log("HIT!");
           break;
       }
@@ -60,13 +61,11 @@ export function GameScreen() {
   };
 
   return (
-    <div className={styles.gameContainer}>
-      <canvas
-        ref={canvasRef}
-        className={styles.gameCanvas}
-        width="512"
-        height="288"
-      ></canvas>
-    </div>
+    <canvas
+      ref={canvasRef}
+      className={styles.gameCanvas}
+      width="512"
+      height="288"
+    ></canvas>
   );
 }

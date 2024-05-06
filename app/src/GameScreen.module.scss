@@ -1,13 +1,3 @@
-.gameContainer {
-    position: relative;
-    width: 512px;
-    height: 288px;
-    margin: 0 auto;
-    outline: 1px solid #000;
-
-    transform: scale(2) translateY(50%);
-
-    & canvas {
-        image-rendering: pixelated;
-    }
+canvas {
+  image-rendering: pixelated;
 }

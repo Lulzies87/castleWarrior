@@ -1,9 +1,13 @@
-import "./App.scss";
+import styles from "./App.module.scss";
 import { GameScreen } from "./GameScreen";
+import { LoginScreen } from "./LoginScreen";
 
 function App() {
-  return <GameScreen />;
-
+  return (
+    <div className={styles.gameContainer}>
+      <LoginScreen />
+    </div>
+  );
 }
 
 export default App;
