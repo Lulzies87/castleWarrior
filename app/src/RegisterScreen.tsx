@@ -29,6 +29,7 @@ export function RegisterScreen() {
     return (
       <main className={styles.registerContainer}>
         <h1 className={styles.title}>Castle Warrior</h1>
+        <h2>Register</h2>
         <form className={styles.registerForm} onSubmit={login} noValidate>
           <div className="form-field">
             <label htmlFor="nickname">Nickname </label>
@@ -36,7 +37,7 @@ export function RegisterScreen() {
           </div>
           <div className="form-field">
             <label htmlFor="password">Password </label>
-            <Input id="password" name="password" type="text" required />
+            <Input id="password" name="password" type="password" required />
           </div>
           <button>Register</button>
         </form>

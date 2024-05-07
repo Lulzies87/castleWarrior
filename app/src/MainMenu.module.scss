@@ -13,4 +13,13 @@
     list-style: none;
     margin: 0;
     padding: 0;
+
+    & li {
+        cursor: pointer;
+        border-radius: 4px;
+
+        &:hover {
+            background-color: darkslategray;
+        }
+    }
 }

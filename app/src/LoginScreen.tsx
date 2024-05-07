@@ -20,7 +20,7 @@ export function LoginScreen() {
         password,
       });
 
-      localStorage.setItem("token", res.data);
+      localStorage.setItem("token", res.data.token);
       navigate("/");
     } catch (err) {
       console.error("Couldn't login, please check nickname & password");
@@ -29,6 +29,7 @@ export function LoginScreen() {
   return (
     <main className={styles.loginContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>
+      <h2>Login</h2>
       <form className={styles.loginForm} onSubmit={login} noValidate>
         <div className="form-field">
           <label htmlFor="nickname">Nickname </label>
@@ -36,7 +37,7 @@ export function LoginScreen() {
         </div>
         <div className="form-field">
           <label htmlFor="password">Password </label>
-          <Input id="password" name="password" type="text" required />
+          <Input id="password" name="password" type="password" required />
         </div>
         <button>Login</button>
       </form>
