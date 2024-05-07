@@ -6,19 +6,20 @@ body {
     margin: 0;
 }
 
-.mainContainer {
-    position: relative;
-    width: inherit;
-    height: inherit;
+.loginContainer {
+    //     position: relative;
+    //     width: inherit;
+    //     height: inherit;
+    padding: 0.8rem;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: center;
 }
 
-.loginForm {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin: 0.4rem auto;
-}
+// .loginForm {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 0.4rem;
+//     margin: 0.4rem auto;
+// }

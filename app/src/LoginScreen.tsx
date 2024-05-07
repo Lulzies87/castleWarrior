@@ -1,7 +1,8 @@
 import { FormEvent } from "react";
-import styles from "./LoginScreen.module.scss";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { Input } from "./utils";
+import styles from "./LoginScreen.module.scss";
 
 export function LoginScreen() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export function LoginScreen() {
     }
   };
   return (
-    <main className={styles.mainContainer}>
+    <main className={styles.loginContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>
       <form className={styles.loginForm} onSubmit={login} noValidate>
         <div className="form-field">
@@ -39,10 +40,11 @@ export function LoginScreen() {
         </div>
         <button>Login</button>
       </form>
+      <a href="/register">Register</a>
     </main>
   );
 }
 
-function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
-  return <input className={["text-field", className].join(" ")} {...props} />;
-}
+// function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
+//   return <input className={["text-field", className].join(" ")} {...props} />;
+// }
