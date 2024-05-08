@@ -32,8 +32,7 @@ app.post("/login", async (req, res) => {
     const [existingUser] = usersCheck as RowDataPacket[];
 
     if (!existingUser) {
-      res.status(401).json({ error: "Incorrect Nickname/Password" });
-      return;
+      return res.status(401).json({ error: "Incorrect Nickname/Password" });
     }
 
     const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
