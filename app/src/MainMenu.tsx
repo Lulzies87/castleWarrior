@@ -1,14 +1,12 @@
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./MainMenu.module.scss";
 
 export function MainMenu() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsLoggedIn(false);
     navigate("/login");
   };
 
@@ -18,9 +16,7 @@ export function MainMenu() {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      setIsLoggedIn(true);
     } else {
-      setIsLoggedIn(false);
       navigate("/login");
     }
   }, [navigate]);
