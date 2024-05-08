@@ -29,9 +29,10 @@ export function RegisterScreen() {
       localStorage.setItem("token", res.data.token);
       navigate("/");
     } catch (err: any) {
-      alert(`${err.response.data.error}`);
+      console.error(err);
     }
   };
+
   return (
     <main className={styles.registerContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>

@@ -6,6 +6,7 @@ import { json } from "body-parser";
 import { getConnection, initConnection } from "./dbConnection";
 import { RowDataPacket } from "mysql2/promise";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const app = express();
 
@@ -25,21 +26,31 @@ app.post("/login", async (req, res) => {
     const [usersCheck] = await connection.execute(
       `SELECT nickname, password
     FROM users
-    WHERE nickname = ? AND password = ?`,
-      [`${nickname}`, `${password}`]
+    WHERE nickname = ?`,
+      [`${nickname}`]
     );
 
     const [existingUser] = usersCheck as RowDataPacket[];
 
     if (!existingUser) {
-      return res.status(401).json({ error: "Incorrect Nickname/Password" });
+      return res.status(401).json({ error: "Nickname doesn't exist!" });
     }
 
-    const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
-      expiresIn: "1h",
-    });
+    bcrypt.compare(password, existingUser.password, (err, result) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ error: "Internal server error while comparing passwords" });
+      } else if (result) {
+        const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
+          expiresIn: "1h",
+        });
 
-    res.status(200).send({ token: token });
+        return res.status(200).send({ token: token });
+      } else {
+        return res.status(401).json({ error: "Password incorrect" });
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -63,10 +74,12 @@ app.post("/register", async (req, res) => {
       return res.status(409).json({ error: "Nickname already taken!" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await connection.execute(
       `INSERT INTO users (nickname, password)
         VALUES (?, ?)`,
-      [`${nickname}`, `${password}`]
+      [`${nickname}`, `${hashedPassword}`]
     );
 
     const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
