@@ -82,7 +82,7 @@ app.post("/register", async (req, res) => {
       [`${nickname}`, `${hashedPassword}`]
     );
 
-    const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
+    const token = jwt.sign({ nickname }, process.env.JWT_SECRET as string, {
       expiresIn: "1h",
     });
 
