@@ -42,7 +42,7 @@ app.post("/login", async (req, res) => {
           .status(500)
           .json({ error: "Internal server error while comparing passwords" });
       } else if (result) {
-        const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
+        const token = jwt.sign({ nickname }, process.env.JWT_SECRET as string, {
           expiresIn: "1h",
         });
 
