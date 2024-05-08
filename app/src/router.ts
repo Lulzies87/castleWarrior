@@ -3,6 +3,7 @@ import App from "./App";
 import { MainMenu } from "./MainMenu";
 import { LoginScreen } from "./LoginScreen";
 import { RegisterScreen } from "./RegisterScreen";
+import { GameScreen } from "./GameScreen";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         Component: RegisterScreen,
+      },
+      {
+        path: "/play",
+        Component: GameScreen,
       },
     ],
   },

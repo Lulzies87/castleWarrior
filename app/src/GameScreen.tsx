@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import styles from "./GameScreen.module.scss";
 
 export function GameScreen() {
+  const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [warriorX, setWarriorX] = useState(1);
   const [warriorY, setWarriorY] = useState(7);
@@ -45,6 +47,9 @@ export function GameScreen() {
         case " ":
           // add HIT code
           console.log("HIT!");
+          break;
+        case "Escape":
+          navigate("/");
           break;
       }
     };

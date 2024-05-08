@@ -12,6 +12,10 @@ export function MainMenu() {
     navigate("/login");
   };
 
+  const handlePlay = () => {
+    navigate("/play");
+  };
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       setIsLoggedIn(true);
@@ -25,7 +29,7 @@ export function MainMenu() {
     <main className={styles.mainMenuContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>
       <ul className={styles.menuOptions}>
-        <li>Start</li>
+        <li onClick={handlePlay}>Start</li>
         <li onClick={handleLogout}>Log Out</li>
       </ul>
     </main>
