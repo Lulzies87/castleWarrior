@@ -3,35 +3,81 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { json } from "body-parser";
-import { initConnection } from "./dbConnection";
+import { getConnection, initConnection } from "./dbConnection";
+import { RowDataPacket } from "mysql2/promise";
 import jwt from "jsonwebtoken";
 
 const app = express();
 
 app.use(cors());
 app.use(json());
-app.use(express.urlencoded({ extended: true }));
 
 app.get("/check", async (_, res) => {
   res.status(200);
   res.json({ status: "OK" });
 });
 
-app.post("/login", (req, res) => {
-  const { nickname, password } = req.body;
+app.post("/login", async (req, res) => {
+  try {
+    const { nickname, password } = req.body;
+    const connection = getConnection();
 
-  if (nickname !== "lulzies" || password !== "1234567") {
-    res.status(401);
-    res.send({
-      error: "Username or password doesn't match.",
+    const [usersCheck] = await connection.execute(
+      `SELECT nickname, password
+    FROM users
+    WHERE nickname = ? AND password = ?`,
+      [`${nickname}`, `${password}`]
+    );
+
+    const [existingUser] = usersCheck as RowDataPacket[];
+
+    if (!existingUser) {
+      res.status(401).json({ error: "Incorrect Nickname/Password" });
+      return;
+    }
+
+    const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
+      expiresIn: "1h",
     });
 
-    return;
+    res.status(200).send({ token: token });
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
-  const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
-    expiresIn: "1h",
-  });
-  res.status(200).send({ token: token });
+});
+
+app.post("/register", async (req, res) => {
+  try {
+    const { nickname, password } = req.body;
+    const connection = getConnection();
+
+    const [usersCheck] = await connection.execute(
+      `SELECT nickname
+    FROM users
+    WHERE nickname = ?`,
+      [`${nickname}`]
+    );
+
+    const [existingUser] = usersCheck as RowDataPacket[];
+
+    if (existingUser) {
+      return res.status(409).json({ error: "Nickname already taken!" });
+    }
+
+    await connection.execute(
+      `INSERT INTO users (nickname, password)
+        VALUES (?, ?)`,
+      [`${nickname}`, `${password}`]
+    );
+
+    const token = jwt.sign({ nickname }, process.env.SECRET_KEY as string, {
+      expiresIn: "1h",
+    });
+
+    return res.status(200).send({ token: token });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 });
 
 async function init() {

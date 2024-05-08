@@ -19,7 +19,7 @@ export function MainMenu() {
       setIsLoggedIn(false);
       navigate("/login");
     }
-  },[navigate]);
+  }, [navigate]);
 
   return (
     <main className={styles.mainMenuContainer}>

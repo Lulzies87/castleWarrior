@@ -22,8 +22,8 @@ export function LoginScreen() {
 
       localStorage.setItem("token", res.data.token);
       navigate("/");
-    } catch (err) {
-      console.error("Couldn't login, please check nickname & password");
+    } catch (err: any) {
+      alert(err.response.data.error);
     }
   };
   return (
@@ -32,12 +32,23 @@ export function LoginScreen() {
       <h2>Login</h2>
       <form className={styles.loginForm} onSubmit={login} noValidate>
         <div className="form-field">
-          <label htmlFor="nickname">Nickname </label>
-          <Input id="nickname" name="nickname" type="text" autoFocus required />
+          <Input
+            id="nickname"
+            name="nickname"
+            type="text"
+            placeholder="Nickname"
+            autoFocus
+            required
+          />
         </div>
         <div className="form-field">
-          <label htmlFor="password">Password </label>
-          <Input id="password" name="password" type="password" required />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+          />
         </div>
         <button>Login</button>
       </form>
@@ -45,7 +56,3 @@ export function LoginScreen() {
     </main>
   );
 }
-
-// function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
-//   return <input className={["text-field", className].join(" ")} {...props} />;
-// }
