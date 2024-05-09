@@ -11,7 +11,6 @@ export function MainMenu() {
       navigate("/login");
     }
   }, []);
-  
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
