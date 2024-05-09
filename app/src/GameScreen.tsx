@@ -1,14 +1,19 @@
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import styles from "./GameScreen.module.scss";
+import { isLoggedIn } from "./utils";
 
 export function GameScreen() {
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [warriorX, setWarriorX] = useState(1);
   const [warriorY, setWarriorY] = useState(7);
-
+  
   useEffect(() => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 

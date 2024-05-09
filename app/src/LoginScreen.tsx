@@ -1,11 +1,17 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { Input } from "./utils";
+import { Input, isLoggedIn } from "./utils";
 import styles from "./LoginScreen.module.scss";
 
 export function LoginScreen() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/");
+    }
+  }, []);
 
   const login = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

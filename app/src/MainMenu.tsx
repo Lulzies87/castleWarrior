@@ -1,10 +1,17 @@
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import styles from "./MainMenu.module.scss";
+import { isLoggedIn } from "./utils";
 
 export function MainMenu() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+    }
+  }, []);
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -14,12 +21,6 @@ export function MainMenu() {
     navigate("/play");
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
 
   return (
     <main className={styles.mainMenuContainer}>
