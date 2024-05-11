@@ -26,7 +26,7 @@ export function RegisterScreen() {
         password,
       });
 
-      localStorage.setItem("token", res.data.token);
+      // localStorage.setItem("token", res.data.token);
       navigate("/");
     } catch (err: any) {
       console.error(err);

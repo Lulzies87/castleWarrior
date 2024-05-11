@@ -8,13 +8,12 @@ export function GameScreen() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [warriorX, setWarriorX] = useState(1);
   const [warriorY, setWarriorY] = useState(7);
-  
-  
+
   useEffect(() => {
     if (!isLoggedIn()) {
       navigate("/login");
     }
-    
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 

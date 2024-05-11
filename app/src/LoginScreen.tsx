@@ -21,15 +21,26 @@ export function LoginScreen() {
     const password = formData.get("password");
 
     try {
-      const res = await axios.post("http://localhost:3000/login", {
-        nickname,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/login",
+        {
+          nickname,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-      localStorage.setItem("token", res.data.token);
+      if (res.headers["set-cookie"]) {
+        const token = res.headers["set-cookie"][0].split("; "[0]);
+        console.log(token);
+      }
+
       navigate("/");
     } catch (err: any) {
-      alert(err.response.data.error);
+      alert("Somethign went wrong");
+      console.error(err);
     }
   };
   return (
