@@ -1,11 +1,14 @@
 import { FormEvent, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { Input, isLoggedIn } from "./utils";
+import { Input, getPlayerData, isLoggedIn } from "./utils";
+import { useDispatch } from "react-redux";
+import { setNewPlayer, setPlayerData } from "./redux/playerSlice";
 import styles from "./LoginScreen.module.scss";
 
 export function LoginScreen() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoggedIn()) {
@@ -17,19 +20,28 @@ export function LoginScreen() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const nickname = formData.get("nickname");
+    const nickname = formData.get("nickname") as string;
     const password = formData.get("password");
 
     try {
-      const res = await axios.post("http://localhost:3000/login", {
-        nickname,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/login",
+        {
+          nickname,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-      localStorage.setItem("token", res.data.token);
-      navigate("/");
+      const playerData = await getPlayerData();
+      if (playerData) {
+        dispatch(setPlayerData(playerData));
+        return navigate("/");
+      }
     } catch (err: any) {
-      alert(err.response.data.error);
+      console.error(err);
     }
   };
   return (
