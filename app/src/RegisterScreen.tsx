@@ -2,16 +2,19 @@ import { FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { Input } from "./utils";
+import { useDispatch } from "react-redux";
 import styles from "./RegisterScreen.module.scss";
+import { setNewPlayer } from "./redux/playerSlice";
 
 export function RegisterScreen() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const register = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const nickname = formData.get("nickname");
+    const nickname = formData.get("nickname") as string;
     const password = formData.get("password");
     const validatePassword = formData.get("validatePassword");
 
@@ -21,14 +24,19 @@ export function RegisterScreen() {
     }
 
     try {
-      const res = await axios.post("http://localhost:3000/register", {
-        nickname,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/register",
+        {
+          nickname,
+          password,
+        },
+        { withCredentials: true }
+      );
 
-      // localStorage.setItem("token", res.data.token);
+      dispatch(setNewPlayer(nickname));
       navigate("/");
     } catch (err: any) {
+      alert(err.response.data.error);
       console.error(err);
     }
   };

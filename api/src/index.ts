@@ -21,28 +21,6 @@ app.use(cors(corsOptions));
 app.use(json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-app.get("/get-user-by-cookie", async (req, res) => {
-  try {
-    const secret = process.env.JWT_SECRET;
-    if (!secret) throw new Error("Couldn't load secret from .env");
-
-    const { token } = req.cookies;
-    console.log(token);
-    if (!token) throw new Error("Couldn't find token from cookies");
-
-    const decodedToken = jwt.verify(token, secret) as JwtPayload;
-    const { nickname } = decodedToken;
-
-    const playerData = await getPlayerData(nickname);
-    if (!playerData)
-      throw new Error(`Couldn't find user with nickname: ${nickname}`);
-
-    res.send({ playerData });
-  } catch (err) {
-    res.send({ error: err });
-  }
-});
-
 app.get("/playerData", async (req, res) => {
   try {
     const token = req.signedCookies.token;
@@ -151,7 +129,6 @@ app.post("/register", async (req, res) => {
 
     const cookieSettings = {
       maxAge: 3600000,
-      httpOnly: true,
       signed: true,
     };
 
@@ -159,7 +136,6 @@ app.post("/register", async (req, res) => {
       .status(200)
       .cookie("token", token, cookieSettings)
       .json({ res: "Cookie set!" });
-    // return res.status(200).send({ token: token });
   } catch (err) {
     res.status(500).json({ error: err });
   }

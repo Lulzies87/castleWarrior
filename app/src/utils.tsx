@@ -5,25 +5,15 @@ export function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
   return <input className={["text-field", className].join(" ")} {...props} />;
 }
 
-export const getPlayerData = async () => {
+export async function getPlayerData() {
   try {
-    const res = await axios.get("/playerData");
+    const res = await axios.get("http://localhost:3000/playerData", {
+      withCredentials: true
+    });
 
     return res.data;
-  } catch (err) {
-    console.error(err);
-    return null;
-  }
-};
-
-export async function handleCheckIfUserIsconnected() {
-  try {
-    const { data } = await axios.get("/get-user-by-cookie");
-    const { playerData } = data;
-
-    console.log("user details:", playerData);
-  } catch (error) {
-    console.error(error);
+  } catch (err: any) {
+    console.error(err.response.data);
   }
 }
 
