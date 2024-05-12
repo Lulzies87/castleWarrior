@@ -8,10 +8,10 @@ export function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
 export async function getPlayerData() {
   try {
     const res = await axios.get("http://localhost:3000/playerData", {
-      withCredentials: true
+      withCredentials: true,
     });
 
-    return res.data;
+    return res;
   } catch (err: any) {
     console.error(err.response.data);
   }

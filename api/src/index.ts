@@ -6,7 +6,7 @@ import { json } from "body-parser";
 import cookieParser from "cookie-parser";
 import { getConnection, initConnection } from "./dbConnection";
 import { RowDataPacket } from "mysql2/promise";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { PlayerData } from "./PlayerData.model";
 

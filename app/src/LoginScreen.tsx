@@ -37,7 +37,7 @@ export function LoginScreen() {
 
       const playerData = await getPlayerData();
       if (playerData) {
-        dispatch(setPlayerData(playerData));
+        dispatch(setPlayerData(playerData.data));
         return navigate("/");
       }
     } catch (err: any) {

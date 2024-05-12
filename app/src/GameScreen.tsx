@@ -1,18 +1,38 @@
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import styles from "./GameScreen.module.scss";
-import { isLoggedIn } from "./utils";
+import { getPlayerData, isLoggedIn } from "./utils";
+import { AxiosResponse } from "axios";
+import { useDispatch } from "react-redux";
+import { setPlayerData } from "./redux/playerSlice";
 
 export function GameScreen() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [warriorX, setWarriorX] = useState(1);
   const [warriorY, setWarriorY] = useState(7);
 
   useEffect(() => {
-    if (!isLoggedIn()) {
-      navigate("/login");
-    }
+    const fetchData = async () => {
+      try {
+        if (isLoggedIn()) {
+          const response = (await getPlayerData()) as AxiosResponse;
+          if (response.status === 200) {
+            dispatch(setPlayerData(response.data));
+          } else {
+            navigate("/login");
+          }
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Failed to fetch player data:", error);
+        navigate("/login");
+      }
+    };
+
+    fetchData();
 
     const canvas = canvasRef.current;
     if (!canvas) return;
