@@ -62,7 +62,7 @@ app.post("/login", async (req, res) => {
 
     const [usersCheck] = await connection.execute(
       `SELECT nickname, password
-    FROM users
+    FROM castleWarrior.users
     WHERE nickname = ?`,
       [`${nickname}`]
     );
@@ -103,9 +103,11 @@ app.post("/register", async (req, res) => {
     const connection = getConnection();
 
     const [usersCheck] = await connection.execute(
-      `SELECT nickname
-    FROM users
-    WHERE nickname = ?`,
+      `
+      SELECT nickname
+      FROM castleWarrior.users
+      WHERE nickname = ?
+    `,
       [`${nickname}`]
     );
 
@@ -118,9 +120,19 @@ app.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await connection.execute(
-      `INSERT INTO users (nickname, password)
-        VALUES (?, ?)`,
+      `
+        INSERT INTO castleWarrior.users (nickname, password)
+        VALUES (?, ?)
+      `,
       [`${nickname}`, `${hashedPassword}`]
+    );
+
+    await connection.execute(
+      `
+        INSERT INTO castleWarrior.playerData (nickname, hp, score, highscore)
+        VALUES(?, ?, ?, ?)
+      `,
+      [`${nickname}`, "100", "0", "0"]
     );
 
     const token = jwt.sign({ nickname }, process.env.JWT_SECRET as string, {
@@ -137,7 +149,7 @@ app.post("/register", async (req, res) => {
       .cookie("token", token, cookieSettings)
       .json({ res: "Cookie set!" });
   } catch (err) {
-    res.status(500).json({ error: err });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

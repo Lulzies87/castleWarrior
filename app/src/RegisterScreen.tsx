@@ -24,7 +24,7 @@ export function RegisterScreen() {
     }
 
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:3000/register",
         {
           nickname,
