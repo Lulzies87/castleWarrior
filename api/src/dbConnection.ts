@@ -12,6 +12,7 @@ export function getConnection() {
 
 export async function initConnection() {
     connection = await createConnection({
+        port: 16433
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
