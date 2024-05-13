@@ -12,6 +12,9 @@ export function GameScreen() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [warriorX, setWarriorX] = useState(1);
   const [warriorY, setWarriorY] = useState(7);
+  const [movingRight, setMovingRight] = useState(false);
+  const [movingLeft, setMovingLeft] = useState(false);
+  const movementSpeed = 2;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,31 +50,22 @@ export function GameScreen() {
     };
     map.src = "src/assets/maps/level1.png";
 
-    let moveInterval: number | null = null;
-
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "d":
         case "D":
-          if (!moveInterval) {
-            moveInterval = setInterval(() => {
-              setWarriorX((prevX) => prevX + 0.1);
-            }, 1);
-          }
+          setMovingRight(true);
           break;
         case "a":
         case "A":
-          setWarriorX((prevX) => prevX - 0.1);
+          setMovingLeft(true);
           break;
         case "w":
         case "W":
-          // add JUMP code
-          setWarriorY((prevY) => prevY - 2);
-          console.log("JUMP!");
+          jump();
           break;
         case " ":
-          // add HIT code
-          console.log("HIT!");
+          attack();
           break;
         case "Escape":
           navigate("/");
@@ -83,25 +77,53 @@ export function GameScreen() {
       switch (e.key) {
         case "d":
         case "D":
-          if (moveInterval) {
-            clearInterval(moveInterval);
-            moveInterval = null;
-          }
+          setMovingRight(false);
+          break;
+        case "a":
+        case "A":
+          setMovingLeft(false);
           break;
       }
+    };
+
+    let lastTime = performance.now();
+
+    const gameLoop = () => {
+      const currentTime = performance.now();
+      const deltaTime = currentTime - lastTime;
+
+      if (movingRight) {
+        const newX = warriorX + movementSpeed * (deltaTime / 1000);
+        setWarriorX(newX);
+      }
+      if (movingLeft) {
+        const newX = warriorX - movementSpeed * (deltaTime / 1000);
+        setWarriorX(newX);
+      }
+
+      lastTime = currentTime;
+      requestAnimationFrame(gameLoop);
+    };
+
+    const jump = () => {
+      setWarriorY((prevY) => prevY - 2);
+    };
+
+    const attack = () => {
+      // Implement attack logic
     };
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
+    const animationId = requestAnimationFrame(gameLoop);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
-      if (moveInterval) {
-        clearInterval(moveInterval);
-      }
+      cancelAnimationFrame(animationId);
     };
-  }, [warriorX]);
+  }, [dispatch, navigate, movingRight, movingLeft, warriorX, warriorY]);
 
   const drawWarrior = (x: number, y: number, ctx: CanvasRenderingContext2D) => {
     if (!ctx) {
