@@ -5,6 +5,7 @@ import { getPlayerData, isLoggedIn } from "./utils";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { setPlayerData } from "./redux/playerSlice";
+import { collisions } from "./data/collisions";
 
 export function GameScreen() {
   const navigate = useNavigate();
@@ -23,6 +24,12 @@ export function GameScreen() {
           const response = (await getPlayerData()) as AxiosResponse;
           if (response.status === 200) {
             dispatch(setPlayerData(response.data));
+
+            const collisionsMap = [];
+            for (let i = 0; i < collisions.length; i += 16) {
+              collisionsMap.push(collisions.slice(i, i + 16));
+            }
+            console.log(collisionsMap);
           } else {
             navigate("/login");
           }

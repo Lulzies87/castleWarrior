@@ -1,10 +1,9 @@
 import { FormEvent } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router";
-import { Input } from "./utils";
+import { Input, server } from "./utils";
 import { useDispatch } from "react-redux";
-import styles from "./RegisterScreen.module.scss";
 import { setNewPlayer } from "./redux/playerSlice";
+import styles from "./RegisterScreen.module.scss";
 
 export function RegisterScreen() {
   const navigate = useNavigate();
@@ -24,8 +23,8 @@ export function RegisterScreen() {
     }
 
     try {
-      await axios.post(
-        "http://localhost:3000/register",
+      await server.post(
+        "/register",
         {
           nickname,
           password,

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import Cookies from "js-cookie";
 
 export function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
@@ -7,7 +7,7 @@ export function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
 
 export async function getPlayerData() {
   try {
-    const res = await axios.get("http://localhost:3000/playerData", {
+    const res = await server.get("/playerData", {
       withCredentials: true,
     });
 
@@ -27,3 +27,7 @@ export function isLoggedIn() {
 export function removeCookie(name: string) {
   Cookies.remove(name);
 }
+
+export const server: AxiosInstance = axios.create({
+  baseURL: "http://localhost:3000/",
+});

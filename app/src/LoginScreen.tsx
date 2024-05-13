@@ -1,7 +1,6 @@
 import { FormEvent, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router";
-import { Input, getPlayerData, isLoggedIn } from "./utils";
+import { Input, getPlayerData, isLoggedIn, server } from "./utils";
 import { useDispatch } from "react-redux";
 import { setPlayerData } from "./redux/playerSlice";
 import styles from "./LoginScreen.module.scss";
@@ -24,8 +23,8 @@ export function LoginScreen() {
     const password = formData.get("password");
 
     try {
-      await axios.post(
-        "http://localhost:3000/login",
+      await server.post(
+        "/login",
         {
           nickname,
           password,
