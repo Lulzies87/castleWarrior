@@ -1,5 +1,5 @@
-import axios, { AxiosInstance } from "axios";
 import Cookies from "js-cookie";
+import { server } from "./router";
 
 export function Input({ className, ...props }: JSX.IntrinsicElements["input"]) {
   return <input className={["text-field", className].join(" ")} {...props} />;
@@ -27,7 +27,3 @@ export function isLoggedIn() {
 export function removeCookie(name: string) {
   Cookies.remove(name);
 }
-
-export const server: AxiosInstance = axios.create({
-  baseURL: "http://localhost:3000/",
-});

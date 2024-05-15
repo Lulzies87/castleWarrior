@@ -4,6 +4,11 @@ import { MainMenu } from "./MainMenu";
 import { LoginScreen } from "./LoginScreen";
 import { RegisterScreen } from "./RegisterScreen";
 import { GameScreen } from "./GameScreen";
+import axios from "axios";
+
+export const server = axios.create({
+  baseURL: "http://localhost:3000/",
+});
 
 export const router = createBrowserRouter([
   {
