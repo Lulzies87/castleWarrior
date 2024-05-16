@@ -48,7 +48,7 @@ export function LoginScreen() {
     <main className={styles.mainContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>
       <form className={styles.loginForm} onSubmit={login} noValidate>
-        <h2 className={styles.loginTitle}>Login</h2>
+        <h2 className={styles.subTitle}>Login</h2>
         <div className="form-field">
           <Input
             id="nickname"
