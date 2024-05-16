@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import styles from "./GameScreen.module.scss";
-import { getPlayerData, isLoggedIn } from "./utils";
+import { getPlayerData, isLoggedIn, onGrid } from "./utils";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { setPlayerData } from "./redux/playerSlice";
+import { loadBoundaries } from "./boundaries";
 import { collisions } from "./data/collisions";
+import styles from "./GameScreen.module.scss";
 
 export function GameScreen() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [warriorX, setWarriorX] = useState(1);
-  const [warriorY, setWarriorY] = useState(7);
+  const [position, setPosition] = useState({ x: 1, y: 7 });
   const [movingRight, setMovingRight] = useState(false);
   const [movingLeft, setMovingLeft] = useState(false);
   const movementSpeed = 2;
@@ -24,12 +24,6 @@ export function GameScreen() {
           const response = (await getPlayerData()) as AxiosResponse;
           if (response.status === 200) {
             dispatch(setPlayerData(response.data));
-
-            const collisionsMap = [];
-            for (let i = 0; i < collisions.length; i += 16) {
-              collisionsMap.push(collisions.slice(i, i + 16));
-            }
-            console.log(collisionsMap);
           } else {
             navigate("/login");
           }
@@ -50,10 +44,12 @@ export function GameScreen() {
     const context = canvas.getContext("2d");
     if (!context) return;
 
+    const boundaries = loadBoundaries(collisions, 16);
+
     const map = new Image();
     map.onload = () => {
       context.drawImage(map, 0, 0);
-      drawWarrior(warriorX, warriorY, context);
+      drawWarrior(position, context);
     };
     map.src = "src/assets/maps/level1.png";
 
@@ -100,12 +96,15 @@ export function GameScreen() {
       const deltaTime = currentTime - lastTime;
 
       if (movingRight) {
-        const newX = warriorX + movementSpeed * (deltaTime / 1000);
-        setWarriorX(newX);
+        const currentPosition = position;
+        const newX = position.x + movementSpeed * (deltaTime / 1000);
+        setPosition({ ...currentPosition, x: newX });
       }
+
       if (movingLeft) {
-        const newX = warriorX - movementSpeed * (deltaTime / 1000);
-        setWarriorX(newX);
+        const currentPosition = position;
+        const newX = position.x - movementSpeed * (deltaTime / 1000);
+        setPosition({ ...currentPosition, x: newX });
       }
 
       lastTime = currentTime;
@@ -113,7 +112,9 @@ export function GameScreen() {
     };
 
     const jump = () => {
-      setWarriorY((prevY) => prevY - 2);
+      const currentPosition = position;
+      const newY = position.y - 2;
+      setPosition({ ...currentPosition, y: newY});;
     };
 
     const attack = () => {
@@ -130,9 +131,12 @@ export function GameScreen() {
       window.removeEventListener("keyup", handleKeyUp);
       cancelAnimationFrame(animationId);
     };
-  }, [dispatch, navigate, movingRight, movingLeft, warriorX, warriorY]);
+  }, [dispatch, navigate, movingRight, movingLeft, position]);
 
-  const drawWarrior = (x: number, y: number, ctx: CanvasRenderingContext2D) => {
+  const drawWarrior = (
+    position: { x: number; y: number },
+    ctx: CanvasRenderingContext2D
+  ) => {
     if (!ctx) {
       console.log("ctx is " + ctx);
       return;
@@ -140,7 +144,17 @@ export function GameScreen() {
     const warrior = new Image();
     warrior.src = "src/assets/characters/warrior/Idle.png";
     warrior.onload = () => {
-      ctx.drawImage(warrior, 0, 0, 78, 58, x * 32 - 8, y * 32 - 12, 78, 58);
+      ctx.drawImage(
+        warrior,
+        0,
+        0,
+        78,
+        58,
+        onGrid(position.x),
+        onGrid(position.y) - 14,
+        78,
+        58
+      );
     };
   };
 
