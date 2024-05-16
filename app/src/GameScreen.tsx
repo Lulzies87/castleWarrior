@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import { getPlayerData, isLoggedIn } from "./utils";
+import { getPlayerData, isLoggedIn, onGrid } from "./utils";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { setPlayerData } from "./redux/playerSlice";
-import { loadBoundaries } from "./boundaries";
+import { Boundary, loadBoundaries } from "./boundaries";
 import { collisions } from "./data/collisions";
 import styles from "./GameScreen.module.scss";
 import { drawDiamond, drawEnemy, drawWarrior } from "./renderables";
@@ -104,13 +104,27 @@ export function GameScreen() {
       if (movingRight) {
         const currentPosition = warriorPosition;
         const newX = warriorPosition.x + movementSpeed * (deltaTime / 1000);
-        setWarriorPosition({ ...currentPosition, x: newX });
+
+        if (
+          checkCollision(onGrid(newX), onGrid(warriorPosition.y), boundaries)
+        ) {
+          setMovingRight(false);
+        } else {
+          setWarriorPosition({ ...currentPosition, x: newX });
+        }
       }
 
       if (movingLeft) {
         const currentPosition = warriorPosition;
         const newX = warriorPosition.x - movementSpeed * (deltaTime / 1000);
-        setWarriorPosition({ ...currentPosition, x: newX });
+
+        if (
+          checkCollision(onGrid(newX), onGrid(warriorPosition.y), boundaries)
+        ) {
+          setMovingLeft(false);
+        } else {
+          setWarriorPosition({ ...currentPosition, x: newX });
+        }
       }
 
       lastTime = currentTime;
@@ -129,7 +143,7 @@ export function GameScreen() {
     };
   }, [movingRight, movingLeft, warriorPosition]);
 
-   const jump = () => {
+  const jump = () => {
     const currentPosition = warriorPosition;
     const newY = warriorPosition.y - 2;
     setWarriorPosition({ ...currentPosition, y: newY });
@@ -138,6 +152,37 @@ export function GameScreen() {
   const attack = () => {
     console.log("Attack!");
     // Implement attack logic
+  };
+
+  const checkCollision = (
+    x: number,
+    y: number,
+    boundaries: Boundary[]
+  ): boolean => {
+    const warriorLeft = x + 9;
+    const warriorRight = x + 78;
+    const warriorTop = y;
+    const warriorBottom = y + 32;
+
+    for (const boundary of boundaries) {
+      const boundaryLeft = boundary.position.x + 32;
+      const boundaryRight = boundary.position.x + boundary.width;
+      const boundaryTop = boundary.position.y;
+      const boundaryBottom = boundary.position.y + boundary.height;
+
+      if (
+        warriorLeft < boundaryRight &&
+        warriorRight > boundaryLeft &&
+        warriorTop < boundaryBottom &&
+        warriorBottom > boundaryTop
+      ) {
+        console.log("Colliding!");
+        return true;
+      }
+    }
+
+    console.log("Not Colliding!");
+    return false;
   };
 
   return (
