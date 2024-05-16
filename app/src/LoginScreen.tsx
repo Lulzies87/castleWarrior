@@ -1,8 +1,9 @@
 import { FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Input, getPlayerData, isLoggedIn, server } from "./utils";
+import { Input, getPlayerData, isLoggedIn } from "./utils";
 import { useDispatch } from "react-redux";
 import { setPlayerData } from "./redux/playerSlice";
+import { server } from "./router";
 import styles from "./LoginScreen.module.scss";
 
 export function LoginScreen() {

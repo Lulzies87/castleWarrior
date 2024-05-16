@@ -1,8 +1,9 @@
 import { FormEvent } from "react";
 import { useNavigate } from "react-router";
-import { Input, server } from "./utils";
+import { Input } from "./utils";
 import { useDispatch } from "react-redux";
 import { setNewPlayer } from "./redux/playerSlice";
+import { server } from "./router";
 import styles from "./RegisterScreen.module.scss";
 
 export function RegisterScreen() {
