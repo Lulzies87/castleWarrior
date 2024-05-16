@@ -18,19 +18,40 @@
 }
 
 .button {
-    background-color: rgb(232, 232, 232);
+    background-color: rgba(219, 163, 147, 0.871);
     margin: 0.2rem 0;
-    width: auto;
+    width: 4.5rem;
     padding: 0.1rem 0.3rem;
-    border: 1px solid grey;
+    border: 1px solid rgb(90, 90, 90);
     border-radius: 3px;
     color: rgb(70, 70, 70);
     font-size: smaller;
     cursor: pointer;
+    text-decoration: none;
 
     &:hover {
         color: black;
         border-color: black;
-        background-color: rgb(226, 226, 226);
+        background-color: rgba(255, 158, 133);
     }
-}  
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    align-items: center;
+}
+
+input {
+    background-color: rgba(255, 218, 218, 0.5);
+    border: none;
+    border-radius: 3px;
+
+    &:focus {
+        border: none;
+        border-color: blue;
+        background-color: rgba(255, 218, 218, 0.8);
+        ;
+    }
+}
