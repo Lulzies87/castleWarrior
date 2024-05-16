@@ -44,8 +44,8 @@ export function RegisterScreen() {
   return (
     <main className={styles.registerContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>
-      <h2>Register</h2>
       <form className={styles.registerForm} onSubmit={register} noValidate>
+        <h2 className={styles.subTitle}>Register</h2>
         <div className="form-field">
           <Input
             id="nickname"
@@ -74,9 +74,11 @@ export function RegisterScreen() {
             required
           />
         </div>
-        <button>Register</button>
+        <button className={styles.button}>Register</button>
       </form>
-      <a href="/login">Login</a>
+      <a className={styles.button} href="/login">
+        Login
+      </a>
     </main>
   );
 }
