@@ -27,3 +27,6 @@ export function isLoggedIn() {
 export function removeCookie(name: string) {
   Cookies.remove(name);
 }
+export function onGrid(num: number) {
+  return Math.floor(num * 32);
+}
