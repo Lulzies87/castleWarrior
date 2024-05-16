@@ -46,16 +46,18 @@ export function MainMenu() {
   return (
     <main className={styles.mainMenuContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>
-      <p>
-        Welcome <span className={styles.playerInfo}>{playerData.nickname}</span>
-        !
-      </p>
-      {playerData.highscore > 0 && (
+      <div className={styles.stats}>
         <p>
-          Your high score is:{" "}
-          <span className={styles.playerInfo}>{playerData.highscore}</span>
+          Welcome{" "}
+          <span className={styles.playerInfo}>{playerData.nickname}</span>!
         </p>
-      )}
+        {playerData.highscore > 0 && (
+          <p>
+            Your high score is:{" "}
+            <span className={styles.playerInfo}>{playerData.highscore}</span>
+          </p>
+        )}
+      </div>
       <ul className={styles.menuOptions}>
         <li onClick={handlePlay}>Start</li>
         <li onClick={handleLogout}>Log Out</li>

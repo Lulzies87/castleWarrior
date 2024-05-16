@@ -1,12 +1,18 @@
 .title {
     margin: 0;
+    font-family: "Honk", system-ui;
 }
 
 .mainMenuContainer {
-    width: inherit;
     height: inherit;
+    background-image: url(./assets/maps/background.png);
     padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 2rem;
 
     & p {
         font-size: 0.8rem;
@@ -16,20 +22,35 @@
 
 .menuOptions {
     list-style: none;
-    margin: 0;
+    // margin: 0.2rem 0;
     padding: 0;
+    // background-color: rgba(255, 204, 0);
+
 
     & li {
+        margin: 0.2rem 0;
+        padding: 0.1rem;
+        width: 5rem;
+        background-color: rgba(255, 218, 218, 0.6);
         cursor: pointer;
         border-radius: 4px;
 
         &:hover {
-            background-color: darkslategray;
+            background-color: rgba(255, 204, 0, 0.5);
+            outline: 1px solid black;
         }
     }
 }
 
 .playerInfo {
-    color: deeppink;
-    text-decoration: underline;
+    color: rgb(255, 204, 0);
+    -webkit-text-stroke: 0.6px black;
+    font-weight: bold;
+}
+
+.stats {
+    background-color: rgba(255, 218, 218, 0.5);
+    width: fit-content;
+    padding: 0.5rem;
+    border-radius: 3px;
 }
