@@ -1,24 +1,26 @@
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import { getPlayerData, isLoggedIn, onGrid } from "./utils";
+import { getPlayerData, isLoggedIn } from "./utils";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { setPlayerData } from "./redux/playerSlice";
 import { loadBoundaries } from "./boundaries";
 import { collisions } from "./data/collisions";
 import styles from "./GameScreen.module.scss";
+import { drawDiamond, drawEnemy, drawWarrior } from "./renderables";
 
 export function GameScreen() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [position, setPosition] = useState({ x: 1, y: 7 });
+  const [warriorPosition, setWarriorPosition] = useState({ x: 1, y: 7 });
+  const [enemyPosition, setEnemyPosition] = useState({ x: 10, y: 3 });
   const [movingRight, setMovingRight] = useState(false);
   const [movingLeft, setMovingLeft] = useState(false);
   const movementSpeed = 2;
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPlayerData = async () => {
       try {
         if (isLoggedIn()) {
           const response = (await getPlayerData()) as AxiosResponse;
@@ -36,8 +38,10 @@ export function GameScreen() {
       }
     };
 
-    fetchData();
+    fetchPlayerData();
+  }, []);
 
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -49,7 +53,9 @@ export function GameScreen() {
     const map = new Image();
     map.onload = () => {
       context.drawImage(map, 0, 0);
-      drawWarrior(position, context);
+      drawWarrior(warriorPosition, context);
+      drawEnemy(enemyPosition, context);
+      drawDiamond({ x: 6.7, y: 5.1 }, context);
     };
     map.src = "src/assets/maps/level1.png";
 
@@ -96,29 +102,19 @@ export function GameScreen() {
       const deltaTime = currentTime - lastTime;
 
       if (movingRight) {
-        const currentPosition = position;
-        const newX = position.x + movementSpeed * (deltaTime / 1000);
-        setPosition({ ...currentPosition, x: newX });
+        const currentPosition = warriorPosition;
+        const newX = warriorPosition.x + movementSpeed * (deltaTime / 1000);
+        setWarriorPosition({ ...currentPosition, x: newX });
       }
 
       if (movingLeft) {
-        const currentPosition = position;
-        const newX = position.x - movementSpeed * (deltaTime / 1000);
-        setPosition({ ...currentPosition, x: newX });
+        const currentPosition = warriorPosition;
+        const newX = warriorPosition.x - movementSpeed * (deltaTime / 1000);
+        setWarriorPosition({ ...currentPosition, x: newX });
       }
 
       lastTime = currentTime;
       requestAnimationFrame(gameLoop);
-    };
-
-    const jump = () => {
-      const currentPosition = position;
-      const newY = position.y - 2;
-      setPosition({ ...currentPosition, y: newY});;
-    };
-
-    const attack = () => {
-      // Implement attack logic
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -131,31 +127,17 @@ export function GameScreen() {
       window.removeEventListener("keyup", handleKeyUp);
       cancelAnimationFrame(animationId);
     };
-  }, [dispatch, navigate, movingRight, movingLeft, position]);
+  }, [movingRight, movingLeft, warriorPosition]);
 
-  const drawWarrior = (
-    position: { x: number; y: number },
-    ctx: CanvasRenderingContext2D
-  ) => {
-    if (!ctx) {
-      console.log("ctx is " + ctx);
-      return;
-    }
-    const warrior = new Image();
-    warrior.src = "src/assets/characters/warrior/Idle.png";
-    warrior.onload = () => {
-      ctx.drawImage(
-        warrior,
-        0,
-        0,
-        78,
-        58,
-        onGrid(position.x),
-        onGrid(position.y) - 14,
-        78,
-        58
-      );
-    };
+   const jump = () => {
+    const currentPosition = warriorPosition;
+    const newY = warriorPosition.y - 2;
+    setWarriorPosition({ ...currentPosition, y: newY });
+  };
+
+  const attack = () => {
+    console.log("Attack!");
+    // Implement attack logic
   };
 
   return (
