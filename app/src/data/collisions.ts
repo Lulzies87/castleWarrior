@@ -1,3 +1,5 @@
+// store this in the DB and create an API request
+
 export const collisions = [
   0, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 0,
   248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 248, 248, 0, 0, 0, 0, 0, 0, 0,
