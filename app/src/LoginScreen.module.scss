@@ -1,25 +1,36 @@
-body {
-    color: #fff;
-}
-
-.title {
+.title,
+.loginTitle {
     margin: 0;
+    font-family: "Honk", system-ui;
 }
 
-.loginContainer {
-    //     position: relative;
-    //     width: inherit;
-    //     height: inherit;
+.mainContainer {
+    height: inherit;
+    background-image: url(./assets/maps/background.png);
+    image-rendering: pixelated;
     padding: 0.8rem;
     text-align: center;
-    //     display: flex;
-    //     flex-direction: column;
-    //     justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.4rem;
+    align-items: center;
 }
 
-// .loginForm {
-//     display: flex;
-//     flex-direction: column;
-//     gap: 0.4rem;
-//     margin: 0.4rem auto;
-// }
+.button {
+    background-color: rgb(232, 232, 232);
+    margin: 0.2rem 0;
+    width: auto;
+    padding: 0.1rem 0.3rem;
+    border: 1px solid grey;
+    border-radius: 3px;
+    color: rgb(70, 70, 70);
+    font-size: smaller;
+    cursor: pointer;
+
+    &:hover {
+        color: black;
+        border-color: black;
+        background-color: rgb(226, 226, 226);
+    }
+}  

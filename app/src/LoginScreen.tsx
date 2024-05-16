@@ -45,10 +45,10 @@ export function LoginScreen() {
     }
   };
   return (
-    <main className={styles.loginContainer}>
+    <main className={styles.mainContainer}>
       <h1 className={styles.title}>Castle Warrior</h1>
-      <h2>Login</h2>
       <form className={styles.loginForm} onSubmit={login} noValidate>
+        <h2 className={styles.loginTitle}>Login</h2>
         <div className="form-field">
           <Input
             id="nickname"
@@ -68,9 +68,9 @@ export function LoginScreen() {
             required
           />
         </div>
-        <button>Login</button>
+        <button className={styles.button}>Login</button>
       </form>
-      <a href="/register">Register</a>
+      <a className={styles.button} href="/register">Register</a>
     </main>
   );
 }
