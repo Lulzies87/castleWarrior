@@ -13,7 +13,7 @@ import { PlayerData } from "./PlayerData.model";
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "https://castlewarrior.lulzies.top"],
   credentials: true,
 };
 
@@ -85,6 +85,7 @@ app.post("/login", async (req, res) => {
       const cookieSettings = {
         maxAge: 3600000,
         signed: true,
+        domain: "lulzies.top",
       };
 
       return res
@@ -142,6 +143,7 @@ app.post("/register", async (req, res) => {
     const cookieSettings = {
       maxAge: 3600000,
       signed: true,
+      domain: "lulzies.top",
     };
 
     return res

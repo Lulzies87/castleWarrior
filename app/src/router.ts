@@ -7,7 +7,7 @@ import { GameScreen } from "./GameScreen";
 import axios from "axios";
 
 export const server = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://api.lulzies.top",
 });
 
 export const router = createBrowserRouter([

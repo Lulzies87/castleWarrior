@@ -25,7 +25,7 @@ export function isLoggedIn() {
 }
 
 export function removeCookie(name: string) {
-  Cookies.remove(name);
+  Cookies.remove(name, { domain: "lulzies.top" });
 }
 export function onGrid(num: number) {
   return Math.floor(num * 32);
