@@ -98,6 +98,7 @@ export function GameScreen() {
     let lastTime = performance.now();
 
     const gameLoop = () => {
+      console.log("Running gameloop");
       const currentTime = performance.now();
       const deltaTime = currentTime - lastTime;
 
@@ -106,10 +107,8 @@ export function GameScreen() {
         const newX = warriorPosition.x + movementSpeed * (deltaTime / 1000);
 
         if (
-          checkCollision(onGrid(newX), onGrid(warriorPosition.y), boundaries)
+          !checkCollision(onGrid(newX), onGrid(warriorPosition.y), boundaries)
         ) {
-          setMovingRight(false);
-        } else {
           setWarriorPosition({ ...currentPosition, x: newX });
         }
       }
@@ -119,10 +118,8 @@ export function GameScreen() {
         const newX = warriorPosition.x - movementSpeed * (deltaTime / 1000);
 
         if (
-          checkCollision(onGrid(newX), onGrid(warriorPosition.y), boundaries)
+          !checkCollision(onGrid(newX), onGrid(warriorPosition.y), boundaries)
         ) {
-          setMovingLeft(false);
-        } else {
           setWarriorPosition({ ...currentPosition, x: newX });
         }
       }
