@@ -96,6 +96,7 @@ export function GameScreen() {
     };
 
     let lastTime = performance.now();
+    let animationId: number;
 
     const gameLoop = () => {
       console.log("Running gameloop");
@@ -125,18 +126,19 @@ export function GameScreen() {
       }
 
       lastTime = currentTime;
-      requestAnimationFrame(gameLoop);
+      animationId = requestAnimationFrame(gameLoop);
     };
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
-    const animationId = requestAnimationFrame(gameLoop);
+    const initGameloop = requestAnimationFrame(gameLoop);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
       cancelAnimationFrame(animationId);
+      cancelAnimationFrame(initGameloop);
     };
   }, [movingRight, movingLeft, warriorPosition]);
 
