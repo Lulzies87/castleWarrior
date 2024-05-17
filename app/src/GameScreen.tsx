@@ -99,7 +99,7 @@ export function GameScreen() {
     let animationId: number;
 
     const gameLoop = () => {
-      console.log("Running gameloop");
+      // console.log("Running gameloop");
       const currentTime = performance.now();
       const deltaTime = currentTime - lastTime;
 
@@ -175,12 +175,12 @@ export function GameScreen() {
         warriorTop < boundaryBottom &&
         warriorBottom > boundaryTop
       ) {
-        console.log("Colliding!");
+        // console.log("Colliding!");
         return true;
       }
     }
 
-    console.log("Not Colliding!");
+    // console.log("Not Colliding!");
     return false;
   };
 
