@@ -13,7 +13,7 @@ import { PlayerData } from "./PlayerData.model";
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://castlewarrior.lulzies.top"],
+  origin: ["http://localhost:5173", "https://castlewarrior.lulzies.top", "https://castlewarrior-app.lulzies.top"],
   credentials: true,
 };
 

@@ -7,7 +7,7 @@ import { GameScreen } from "./GameScreen";
 import axios from "axios";
 
 export const server = axios.create({
-  baseURL: "https://api.lulzies.top",
+  baseURL: "https://castlewarrior-api.lulzies.top",
 });
 
 export const router = createBrowserRouter([
